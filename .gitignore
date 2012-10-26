@@ -13,3 +13,10 @@ build/*
 xcuserdata
 profile
 *.moved-aside
+
+# CocoaPods
+Podfile.lock
+Pods/
+
+#Docset/AppleDoc
+*/Docset/*

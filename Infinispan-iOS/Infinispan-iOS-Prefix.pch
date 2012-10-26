@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'Infinispan-iOS' target in the 'Infinispan-iOS' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
