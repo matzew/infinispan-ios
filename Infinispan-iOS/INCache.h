@@ -27,11 +27,11 @@
 -(id)initWith:(NSString*) name url:(NSURL*)url;
 +(id)cacheWith:(NSString*) name url:(NSURL*)url;
 
--(void)put:(NSString*) key value:(id)value;
+-(void)put:(NSString*) key value:(NSString*)value;
 -(void)get:(NSString*) key;
 -(void)remove:(NSString*) key;
 
-//-(void)notify:(NSString*) key events:(id)events;
-//-(void)unnotify:(NSString*) key;
+-(void)notify:(NSString*) key events:(id)events;
+-(void)unnotify:(NSString*) key;
 
 @end

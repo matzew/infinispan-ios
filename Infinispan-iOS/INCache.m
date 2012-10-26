@@ -65,8 +65,7 @@
     return [[self alloc] initWith:name url:url];
 }
 
--(void)put:(NSString*) key value:(id)value {
-    
+-(void)put:(NSString*) key value:(NSString*)value {
     //    "opCode" : "put",
     //    "cacheName" : cacheName,
     //    "key" : key,
@@ -106,7 +105,33 @@
     [data setValue:key forKey:@"key"];
     
     [client send:[self stringify:data]];
+}
+
+-(void)notify:(NSString*) key events:(id)events{
+//    "opCode" : "notify",
+//    "cacheName" : cacheName,
+//    "key" : key,
+//    "onEvents" : onEvents
+    NSMutableDictionary* data = [NSMutableDictionary dictionary];
+    [data setValue:@"notify" forKey:@"opCode"];
+    [data setValue:_cacheName forKey:@"cacheName"];
+    [data setValue:key forKey:@"key"];
+    [data setValue:events forKey:@"onEvents"];
     
+    [client send:[self stringify:data]];
+
+}
+
+-(void)unnotify:(NSString*) key {
+//    "opCode" : "unnotify",
+//    "cacheName" : cacheName,
+//    "key" : key
+    NSMutableDictionary* data = [NSMutableDictionary dictionary];
+    [data setValue:@"unnotify" forKey:@"opCode"];
+    [data setValue:_cacheName forKey:@"cacheName"];
+    [data setValue:key forKey:@"key"];
+    
+    [client send:[self stringify:data]];
 }
 
 #pragma mark - SRWebSocketDelegate
@@ -118,23 +143,27 @@
     // queued messages...
 }
 
-//- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
-//{
-//    NSLog(@":( Websocket Failed With Error %@", error);
-//}
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
+{
+    NSLog(@":( Websocket Failed With Error %@", error);
+}
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
 {
     
-    NSLog(@"\n\n%@\n", message);
+    // only JSON here.
+    
+    NSDictionary* dic = [self parse:message];
+    if (_callback) {
+        _callback([dic valueForKey:@"key"], [dic valueForKey:@"value"]);
+    }
     
 }
 
-//- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
-//{
-//    NSLog(@"WebSocket closed");
-//}
-//
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
+{
+    NSLog(@"WebSocket closed");
+}
 
 
 /// JSON helpers:
@@ -144,9 +173,9 @@
 }
 
 -(id) parse:(id) json {
-    return [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
+    
+    NSData* data = [json dataUsingEncoding:NSUTF8StringEncoding];
+    return [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 }
-
-
 
 @end
