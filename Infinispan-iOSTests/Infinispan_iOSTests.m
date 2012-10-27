@@ -18,6 +18,8 @@
 #import <SenTestingKit/SenTestingKit.h>
 #import "INCache.h"
 
+#import "JSONKit.h"
+
 @interface Infinispan_iOSTests : SenTestCase
 
 @end
@@ -41,22 +43,27 @@
 
 - (void)testExample
 {
-    INCache* cache = [INCache cacheWith:@"" url:[NSURL URLWithString:@"ws://localhost:8181"]];
+    __block INCache* cache = [INCache cacheWith:@"testCache" url:[NSURL URLWithString:@"ws://localhost:8181"]];
     
     cache.callback =
     
     ^(NSString* key, id value) {
       
         NSLog(@"\n\nKEY:'%@' VAL:'%@'", key, value);
+        if ([value class] != [NSNull class] && [value isEqualToString:@"JBoss did it"]) {
+            _finishedFlag = YES;
+        }
     };
     
-    [cache notify:@"BLAH" events:nil];
+    [cache notify:@"Infinispan-iOS" events:nil];
+    [cache put:@"Infinispan-iOS" value:@"JBoss did it"];
+    // clean up...
+    [cache put:@"Infinispan-iOS" value:@""];
     
     // keep the run loop going
     while(!_finishedFlag) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
-    
 }
 
 @end

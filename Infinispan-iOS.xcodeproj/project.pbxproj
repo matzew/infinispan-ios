@@ -59,7 +59,6 @@
 		57ED8181163A8C8E0048B7B6 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		57ED8189163A8C8E0048B7B6 /* Infinispan-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Infinispan-iOSTests-Info.plist"; sourceTree = "<group>"; };
 		57ED818B163A8C8E0048B7B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		57ED818D163A8C8E0048B7B6 /* Infinispan_iOSTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Infinispan_iOSTests.h; sourceTree = "<group>"; };
 		57ED818E163A8C8E0048B7B6 /* Infinispan_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Infinispan_iOSTests.m; sourceTree = "<group>"; };
 		57ED819E163A8E780048B7B6 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		57ED81A1163A8E7C0048B7B6 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -159,7 +158,6 @@
 		57ED8187163A8C8E0048B7B6 /* Infinispan-iOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				57ED818D163A8C8E0048B7B6 /* Infinispan_iOSTests.h */,
 				57ED818E163A8C8E0048B7B6 /* Infinispan_iOSTests.m */,
 				57ED8188163A8C8E0048B7B6 /* Supporting Files */,
 			);

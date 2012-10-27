@@ -17,6 +17,7 @@
  */
 
 #import "INCache.h"
+#import "JSONKit.h"
 #import "SRWebSocket.h"
 
 @interface INCache() <SRWebSocketDelegate>
@@ -76,9 +77,12 @@
     [data setValue:_cacheName forKey:@"cacheName"];
     [data setValue:key forKey:@"key"];
     [data setValue:value forKey:@"value"];
-    [data setValue:@"application/json" forKey:@"mime"];
     
-    [client send:[self stringify:data]];
+    // just text/plain......, right now
+    [data setValue:@"text/plain" forKey:@"mime"];
+    
+    NSString* jsonString = [self stringify:data];
+    [client send:jsonString];
 }
 
 
@@ -107,7 +111,7 @@
     [client send:[self stringify:data]];
 }
 
--(void)notify:(NSString*) key events:(id)events{
+-(void)notify:(NSString*) key events:(id)events {
 //    "opCode" : "notify",
 //    "cacheName" : cacheName,
 //    "key" : key,
@@ -136,46 +140,34 @@
 
 #pragma mark - SRWebSocketDelegate
 
-- (void)webSocketDidOpen:(SRWebSocket *)webSocket;
-{
+- (void)webSocketDidOpen:(SRWebSocket *)webSocket {
     NSLog(@"Cache Connected");
     _open = YES;
     // queued messages...
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error;
-{
+- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
     NSLog(@":( Websocket Failed With Error %@", error);
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message;
-{
-    
-    // only JSON here.
-    
+- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
     NSDictionary* dic = [self parse:message];
     if (_callback) {
         _callback([dic valueForKey:@"key"], [dic valueForKey:@"value"]);
     }
-    
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
-{
-    NSLog(@"WebSocket closed");
+- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+    NSLog(@"WebSocket closed ('%@')", reason);
 }
 
 
 /// JSON helpers:
 -(NSString*) stringify:(id) object {
-    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
-    return [[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding];
+    return [object JSONString];
 }
-
--(id) parse:(id) json {
-    
-    NSData* data = [json dataUsingEncoding:NSUTF8StringEncoding];
-    return [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+-(id) parse:(NSString*) json {
+    return [json objectFromJSONString];
 }
 
 @end
