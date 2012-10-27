@@ -41,41 +41,6 @@
 
 - (void)testExample
 {
-//    NSMutableDictionary* object = [NSMutableDictionary dictionary];
-//    [object setValue:@"A" forKey:@"keyA"];
-//    [object setValue:@"B" forKey:@"keyB"];
-//    [object setValue:@"C" forKey:@"keyC"];
-//    
-//    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
-//    NSLog(@"\n\n\n%@\n\n", [[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding]);
-//    
-//    
-//    NSDictionary* RET = [NSJSONSerialization JSONObjectWithData:JSONData options:0 error:nil];
-//    
-//    NSLog(@"\n\n\n%@\n\n", [RET valueForKey:@"keyA"]);
-
-    
-    
-//    NSMutableDictionary* data = [NSMutableDictionary dictionary];
-//    [data setValue:@"put" forKey:@"opCode"];
-//    [data setValue:@"adsdas" forKey:@"cacheName"];
-//    [data setValue:@"key" forKey:@"key"];
-//    [data setValue:@"/" forKey:@"value"];
-//    [data setValue:@"application/json" forKey:@"mime"];
-//
-//    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
-//    NSString* jsonStr = [[NSString alloc] initWithData:JSONData encoding:NSUTF8StringEncoding];
-//    
-//    
-//    NSLog(@"\n\n\n%@", jsonStr);
-//
-//    NSData* data = [json dataUsingEncoding:NSUTF8StringEncoding];
-//    [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//
-//    
-    
-    
-    
     INCache* cache = [INCache cacheWith:@"" url:[NSURL URLWithString:@"ws://localhost:8181"]];
     
     cache.callback =
@@ -85,20 +50,12 @@
         NSLog(@"\n\nKEY:'%@' VAL:'%@'", key, value);
     };
     
-    NSLog(@"BEFORE");
     [cache notify:@"BLAH" events:nil];
-    NSLog(@"AFTER");
-    
-    
     
     // keep the run loop going
     while(!_finishedFlag) {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
-    
-    
-    
-    
     
 }
 
